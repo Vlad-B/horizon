@@ -12,11 +12,11 @@ import {
 
 // third party imports
 import moment from "moment";
+import axios from "axios";
 import { getSunrise, getSunset } from "sunrise-sunset-js";
 
 // assets
 import { IconSunrise, IconSunset } from "../assets/Icons/Icons";
-import axios from "axios";
 
 const getCityApi = (lat, long) =>
     `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${long}&localityLanguage=en`;
@@ -53,8 +53,8 @@ const SunriseSunset = () => {
                     setState({
                         ...stateRef.current,
                         cityLocation: `${data.locality}, ${data.countryName}`,
-                        sunset: moment(sunset).format("HH:mm:ss"),
-                        sunrise: moment(sunrise).format("HH:mm:ss"),
+                        sunset: moment(sunset).format("HH:mm"),
+                        sunrise: moment(sunrise).format("HH:mm"),
                     })
                 )
                 .catch((err) => console.error(err));
