@@ -1,7 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 
 // material-ui imports
-import { Typography } from "@mui/material";
+import {
+    Paper,
+    Typography,
+    Stack,
+    Grid,
+    Card,
+    CardHeader,
+    CardContent,
+} from "@mui/material";
 
 // third party imports
 import moment from "moment";
@@ -43,16 +51,51 @@ const SunriseSunset = () => {
     }, [latitude, longitude]);
 
     return (
-        <>
-            <Typography variant="h3">
-                <IconSunrise sx={{ fontSize: 50, fill: "#ffd54f", px: 2 }} />
-                {sunrise}
-            </Typography>
-            <Typography variant="h3">
-                <IconSunset sx={{ fontSize: 50, fill: "#ff8f00", px: 2 }} />
-                {sunset}
-            </Typography>
-        </>
+        <Paper component={Card} sx={{ width: "50vw", height: "100%" }}>
+            <CardContent
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                }}
+            >
+                <Grid
+                    sx={{ height: "100%" }}
+                    container
+                    justifyContent="space-around"
+                    alignContent="center"
+                >
+                    <Grid item>
+                        <Stack alignItems="center">
+                            <IconSunrise
+                                sx={{
+                                    width: "100%",
+                                    mb: 2,
+                                    fontSize: 150,
+                                    fill: "#ffd54f",
+                                }}
+                            />
+                            <Typography>Sunrise time:</Typography>
+                            <Typography variant="h4">{sunrise}</Typography>
+                        </Stack>
+                    </Grid>
+                    <Grid item>
+                        <Stack alignItems="center">
+                            <IconSunset
+                                sx={{
+                                    width: "100%",
+                                    mb: 2,
+                                    fontSize: 150,
+                                    fill: "#ff8f00",
+                                }}
+                            />
+                            <Typography>Sunset time:</Typography>
+                            <Typography variant="h4">{sunset}</Typography>
+                        </Stack>
+                    </Grid>
+                </Grid>
+            </CardContent>
+        </Paper>
     );
 };
 
