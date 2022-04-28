@@ -62,7 +62,17 @@ const SunriseSunset = () => {
     }, [latitude, longitude]);
 
     return (
-        <Paper component={Card} sx={{ width: "50vw", height: "100%" }}>
+        <Paper
+            component={Card}
+            elevation={8}
+            sx={{
+                width: "50vw",
+                height: "100%",
+                ":hover": {
+                    boxShadow: 16,
+                },
+            }}
+        >
             <CardContent
                 sx={{
                     p: 4,
