@@ -17,6 +17,10 @@ import { getSunrise, getSunset } from "sunrise-sunset-js";
 
 // assets
 import { IconSunrise, IconSunset } from "../assets/Icons/Icons";
+import axios from "axios";
+
+const getCityApi = (lat, long) =>
+    `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${long}&localityLanguage=en`;
 
 const SunriseSunset = () => {
     const [state, setState] = useState({
@@ -24,10 +28,11 @@ const SunriseSunset = () => {
         longitude: null,
         sunrise: "",
         sunset: "",
+        cityLocation: "",
     });
     const stateRef = useRef();
     stateRef.current = state;
-    const { sunrise, sunset, latitude, longitude } = state;
+    const { sunrise, sunset, latitude, longitude, cityLocation } = state;
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((position) => {
             setState({
@@ -42,11 +47,18 @@ const SunriseSunset = () => {
         if (latitude && longitude) {
             const sunset = getSunset(latitude, longitude);
             const sunrise = getSunrise(latitude, longitude);
-            setState({
-                ...stateRef.current,
-                sunset: moment(sunset).format("HH:mm:ss"),
-                sunrise: moment(sunrise).format("HH:mm:ss"),
-            });
+
+            axios
+                .get(getCityApi(latitude, longitude))
+                .then(({ data }) =>
+                    setState({
+                        ...stateRef.current,
+                        cityLocation: `${data.locality}, ${data.countryName}`,
+                        sunset: moment(sunset).format("HH:mm:ss"),
+                        sunrise: moment(sunrise).format("HH:mm:ss"),
+                    })
+                )
+                .catch((err) => console.error(err));
         }
     }, [latitude, longitude]);
 
@@ -54,13 +66,17 @@ const SunriseSunset = () => {
         <Paper component={Card} sx={{ width: "50vw", height: "100%" }}>
             <CardContent
                 sx={{
+                    p: 4,
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
                 }}
             >
+                <Typography>
+                    Your current location is: <b>{cityLocation}</b>
+                </Typography>
                 <Grid
-                    sx={{ height: "100%" }}
+                    sx={{ m: 4, height: "100%" }}
                     container
                     justifyContent="space-around"
                     alignContent="center"
