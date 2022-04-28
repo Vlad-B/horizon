@@ -8,6 +8,8 @@ import {
     Grid,
     Card,
     CardContent,
+    useTheme,
+    useMediaQuery,
 } from "@mui/material";
 
 // third party imports
@@ -22,6 +24,8 @@ const getCityApi = (lat, long) =>
     `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${long}&localityLanguage=en`;
 
 const SunriseSunset = () => {
+    const theme = useTheme();
+    const matchesMdDown = useMediaQuery(theme.breakpoints.down("md"));
     const [state, setState] = useState({
         latitude: null,
         longitude: null,
@@ -89,6 +93,7 @@ const SunriseSunset = () => {
                     container
                     justifyContent="space-around"
                     alignContent="center"
+                    gap={matchesMdDown ? 6 : 0}
                 >
                     <Grid item>
                         <Stack alignItems="center">
